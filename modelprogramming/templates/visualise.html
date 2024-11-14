@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accident Trends</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light bg-secondary justify-content-center">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="/static/images/images.jfif" alt="" width="30" height="30" class="">
+            DHAKA ACCIDENT NEWS
+          </a>
+        </div>
+      </nav>
+      <div class="d-flex align-items-center justify-content-center" style="min-height: 20vh;">
+        <div class="text-center">
+    <h1>Accident Data Trends</h1>
+    <form method="get" action="{{ url_for('visualise') }}">
+        <label for="trend_type">Select Trend Type:</label>
+        <select id="trend_type" name="trend_type" onchange="this.form.submit()">
+            <option value="monthly_trend" {% if selected_trend == 'monthly_trend' %}selected{% endif %}>Monthly Trends</option>
+            <option value="monthly_trend_year" {% if selected_trend == 'monthly_trend_year' %}selected{% endif %}>Monthly Trends Year</option>
+            <option value="yearly" {% if selected_trend == 'yearly' %}selected{% endif %}>Yearly Trends</option>
+            <option value="weekday" {% if selected_trend == 'weekday' %}selected{% endif %}>Weekday Trends</option>
+            <option value="seasonal" {% if selected_trend == 'seasonal' %}selected{% endif %}>Seasonal Trends</option>
+            <option value="severity" {% if selected_trend == 'severity' %}selected{% endif %}>Severity Trends</option>
+            <option value="top10" {% if selected_trend == 'top10' %}selected{% endif %}>Top 10 Locations</option>
+            <option value="yearlytop10" {% if selected_trend == 'yearlytop10' %}selected{% endif %}>Yearly Top 10 Location</option>
+            <option value="vehicle_type" {% if selected_trend == 'vehicle_type' %}selected{% endif %}>Vehicle Type</option>
+            <option value="weekday_severity" {% if selected_trend == 'weekday_severity' %}selected{% endif %}>Weekday Severity Trends</option>
+        </select>
+        <button type="submit">Update</button>
+    </form>
+</div>
+</div>
+    <div id="plot"></div>
+    <script type="text/javascript">
+        var plot_data = {{ plot_json | safe }};
+        Plotly.newPlot('plot', plot_data.data, plot_data.layout);
+    </script>
+</body>
+</html>
